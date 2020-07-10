@@ -13,6 +13,14 @@ use LaravelDaily\Invoices\Classes\InvoiceItem;
 
 class ProductController extends Controller
 {
+    private $addressPart1 = 'PO Box 34567';
+    private $addressPart2 = 'Devan Plaza, Crossway Road, Nairoby';
+    private $address;
+
+    public function __construct() {
+        $this->address = $this->addressPart1 . ', ' . $this->addressPart2;
+    }
+
     public function index()
     {
 
@@ -49,20 +57,21 @@ class ProductController extends Controller
     {
         $product = Product::findorFail($id);
 
+        $address = $this->address;
    
-    $pdf = PDF::loadView('invoice', compact('product'))->setPaper('a5', 'landscape');
-    $customer = $product->customer;
-    return $pdf->stream( $customer.'.pdf');
+        $pdf = PDF::loadView('invoice', compact('address','product'))->setPaper('a5', 'landscape');
+        $customer = $product->customer;
+        return $pdf->stream( $customer.'.pdf');
     }
 
 
-    //failed ignore this
     public function generateInvoiceTwo($id)
     {
         $product = Product::findorFail($id);
 
         $client = new Party([
             'name'          => 'Your Name',
+            'address'       => $this->address,
             'phone'         => '254 4567890',
             'custom_fields' => [
                 'note'        => 'IDDQD',
@@ -85,8 +94,8 @@ class ProductController extends Controller
         ];
 
         $notes = [
-            'PO Box 34567',
-            'Devan Plaza, crossway Road, Nairoby',
+            $this->addressPart1,
+            $this->addressPart2,
             'in regards of delivery or something else',
         ];
         $notes = implode("<br>", $notes);
@@ -105,7 +114,7 @@ class ProductController extends Controller
             ->filename($product->product)
             ->addItems($items)
             ->notes($notes)
-            ->logo(public_path('vendor/invoices/sample-logo.png'));
+            ->logo(public_path('/images.png'));
             // You can additionally save generated invoice to configured disk
             
             $link = $invoice->url();
