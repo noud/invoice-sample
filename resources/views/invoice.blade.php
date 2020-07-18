@@ -17,7 +17,7 @@
 
         <div style="text-align:center; margin: 10px; 0 45px 0" >
             <img style="width:100px; display:block;" src="{{ public_path('images.png') }}" height="50px;">
-            <p> <i>PO Box, Devan Plaza, crossway Road, Nairoby </i></p>
+            <p> <i>{{ $address }} </i></p>
         </div>
         <h3>Client: {{$product->customer}}</h3>
         <table class="table table-sm table-bordered">
