@@ -19,5 +19,4 @@ Route::get('invoice','ProductController@index' )->name('product.index');
 Route::post('invoice', 'ProductController@store')->name('product.store');
 Route::get('invoice/{id}', 'ProductController@generateInvoice')->name('generate.invoice');
 
-// failed
-//Route::get('new/invoice/{id}', 'ProductController@generateInvoiceTwo')->name('generate.invoice.two');
+Route::get('new/invoice/{id}', 'ProductController@generateInvoiceTwo')->name('generate.invoice.two');
